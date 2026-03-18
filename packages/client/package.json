@@ -1,5 +1,5 @@
 {
-  "name": "@ddd-template/client",
+  "name": "@ejelome/client",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ddd-template/types": "*",
+    "@ejelome/types": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

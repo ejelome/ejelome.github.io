@@ -1,5 +1,5 @@
 {
-  "name": "@ddd-template/server",
+  "name": "@ejelome/server",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@ddd-template/types": "*",
+    "@ejelome/types": "*",
     "cors": "^2.8.6",
     "express": "^4.21.0",
     "zod": "^3.23.8"
