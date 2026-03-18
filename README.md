@@ -1,6 +1,6 @@
-# ejelome
+# ejelome.com
 
-Minimal DDD example: React + TypeScript client, Express server, shared types (Zod) in a monorepo. Step-by-step from zero to running locally.
+Peronal devblog
 
 ## Prerequisites
 
