@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <div style={{ padding: '1rem', fontFamily: 'system-ui' }}>
-      <h1>DDD Template</h1>
+      <h1>ejelome</h1>
       <p>Client is running.</p>
       <p>Server health: {health?.ok === true ? '✓ OK' : health === null ? '…' : '✗'}</p>
     </div>
