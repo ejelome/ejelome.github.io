@@ -1,5 +1,5 @@
 {
-  "name": "ddd-template",
+  "name": "ejelome",
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
