@@ -1,0 +1,74 @@
+name: Auto-merge main into dev
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-merge-main-into-dev
+  cancel-in-progress: false
+
+jobs:
+  merge-main-into-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge main -> dev
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main --prune
+
+          if ! git show-ref --verify --quiet refs/heads/dev; then
+            echo "Error: 'dev' branch not found."
+            exit 1
+          fi
+
+          before_sha="$(git rev-parse HEAD)"
+
+          # If dev already contains main, there's nothing to merge.
+          if git merge-base --is-ancestor "origin/main" HEAD; then
+            echo "dev already includes main; nothing to do."
+            exit 0
+          fi
+
+          merge_message="chore(release): merge main into dev"
+
+          if git merge-base --is-ancestor HEAD "origin/main"; then
+            echo "Fast-forwarding dev to main."
+            if ! git merge --ff-only "origin/main"; then
+              echo "Error: fast-forward merge failed."
+              exit 1
+            fi
+          else
+            echo "Creating merge commit: main -> dev."
+            if ! git merge --no-ff -m "$merge_message" "origin/main"; then
+              echo "Error: merge failed (likely conflicts)."
+              git merge --abort || true
+              exit 1
+            fi
+          fi
+
+          after_sha="$(git rev-parse HEAD)"
+
+          # Fast-forward updates can change the SHA without leaving a merge commit.
+          if [[ "$before_sha" == "$after_sha" ]]; then
+            echo "No new commits created; skipping push."
+            exit 0
+          fi
+
+          git push origin "HEAD:dev"
+
